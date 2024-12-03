@@ -97,6 +97,7 @@ CAPABILITIES_TO_ATTRIBUTES = {
     "samsungce.lamp": ["brightnessLevel"],
     "ovenSetpoint": ["ovenSetpoint"],
     "samsungce.microwavePower": ["powerLevel"],
+    "samsungce.ovenMode": ["ovenMode"],
     "samsungce.meatProbe": [
         "temperatureSetpoint",
         "temperature",
@@ -228,6 +229,7 @@ class Capability:
     oven_setpoint = "ovenSetpoint"
     oven_meat_probe = "samsungce.meatProbe"
     oven_microwave_power = "samsungce.microwavePower"
+    ce_oven_mode = "samsungce.ovenMode"
     power_consumption_report = "powerConsumptionReport"
     power_meter = "powerMeter"
     power_source = "powerSource"
