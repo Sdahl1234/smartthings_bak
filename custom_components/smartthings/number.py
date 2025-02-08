@@ -2,46 +2,28 @@
 
 from __future__ import annotations
 
-import logging
-
+# import asyncio
 from collections import namedtuple
 from collections.abc import Sequence
-
-import asyncio
-
+import logging
 from typing import Literal
 
-from . import Attribute, Capability
-from pysmartthings.device import DeviceEntity, Command
+from pysmartthings.device import DeviceEntity
 
 from homeassistant.components.number import NumberEntity, NumberMode
+from homeassistant.const import UnitOfTemperature
+from homeassistant.core import HomeAssistant
 
-from homeassistant.components.sensor import SensorDeviceClass
-
-
-from . import SmartThingsEntity
+from .capability import Attribute, Capability
 from .const import DATA_BROKERS, DOMAIN
-
-from homeassistant.const import (
-    UnitOfArea,
-    CONCENTRATION_PARTS_PER_MILLION,
-    LIGHT_LUX,
-    PERCENTAGE,
-    EntityCategory,
-    UnitOfElectricPotential,
-    UnitOfEnergy,
-    UnitOfMass,
-    UnitOfPower,
-    UnitOfTemperature,
-    UnitOfVolume,
-)
+from .entity import SmartThingsEntity
 
 UNITS = {
     "C": UnitOfTemperature.CELSIUS,
     "F": UnitOfTemperature.FAHRENHEIT,
 }
 
-Map = namedtuple(
+Map = namedtuple(  # noqa: PYI024
     "map",
     "attribute command name unit_of_measurement icon min_value max_value step mode",
 )
@@ -65,7 +47,7 @@ CAPABILITY_TO_NUMBER = {
 }
 
 
-async def async_setup_entry(hass, config_entry, async_add_entities):
+async def async_setup_entry(hass: HomeAssistant, config_entry, async_add_entities):
     """Add numbers for a config entries."""
     broker = hass.data[DOMAIN][DATA_BROKERS][config_entry.entry_id]
     numbers = []
@@ -227,9 +209,6 @@ class SmartThingsNumber(SmartThingsEntity, NumberEntity):
 
     @property
     def native_value(self) -> float:
-        """Return  Value."""
-        #        return self._device.status.attributes[self._attribute].value
-
         """Return the state of the sensor."""
         _LOGGER.debug(
             "NB Return the state component: %s ",
@@ -276,12 +255,12 @@ class SmartThingsNumber(SmartThingsEntity, NumberEntity):
         if self._component == "cooler":
             if unit == "F":
                 return 34
-            elif unit == "C":
+            elif unit == "C":  # noqa: RET505
                 return 1
         elif self._component == "freezer":
             if unit == "F":
                 return -8
-            elif unit == "C":
+            elif unit == "C":  # noqa: RET505
                 return -22
 
         return self._attr_native_min_value
@@ -304,24 +283,24 @@ class SmartThingsNumber(SmartThingsEntity, NumberEntity):
         if self._component == "cooler":
             if unit == "F":
                 return 44
-            elif unit == "C":
+            elif unit == "C":  # noqa: RET505
                 return 6
         elif self._component == "freezer":
             if unit == "F":
                 return 5
-            elif unit == "C":
+            elif unit == "C":  # noqa: RET505
                 return -15
 
         return self._attr_native_max_value
 
     @property
     def native_step(self) -> float:
-        """Define stepping size"""
+        """Define stepping size."""
         return self._attr_native_step
 
     @property
     def native_unit_of_measurement(self) -> str | None:
-        """Return unit of measurement"""
+        """Return unit of measurement."""
         #        unit = self._device.status.attributes[self._attribute].unit
         if self._component == "main":
             unit = self._device.status.attributes[self._attribute].unit
@@ -342,5 +321,5 @@ class SmartThingsNumber(SmartThingsEntity, NumberEntity):
 
     @property
     def mode(self) -> Literal["auto", "slider", "box"]:
-        """Return representation mode"""
+        """Return representation mode."""
         return self._attr_mode

@@ -17,11 +17,11 @@ from homeassistant.components.sensor import (
 )
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import (
-    UnitOfArea,
     CONCENTRATION_PARTS_PER_MILLION,
     LIGHT_LUX,
     PERCENTAGE,
     EntityCategory,
+    UnitOfArea,
     UnitOfElectricPotential,
     UnitOfEnergy,
     UnitOfMass,
@@ -34,8 +34,9 @@ from homeassistant.helpers import entity_platform
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.util import dt as dt_util
 
-from . import Attribute, Capability, SmartThingsEntity
+from .capability import Attribute, Capability
 from .const import DATA_BROKERS, DOMAIN
+from .entity import SmartThingsEntity
 
 Map = namedtuple(  # noqa: PYI024
     "Map", "attribute name default_unit device_class state_class entity_category"
